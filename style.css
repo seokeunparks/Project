@@ -1,0 +1,554 @@
+/* 구글 웹 폰트 가져오기 */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Varela+Round&display=swap');
+
+/* header.css 시작 */
+/* 모든 요소의 기본 스타일 초기화 */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+/* 링크의 기본 스타일 초기화 */
+a, a:link, a:visited{
+  color:inherit;
+  text-decoration:none;
+}
+/* 리스트 스타일 초기화 */
+li{
+  list-style:none;
+}
+/* 중앙 정렬을 위한 컨테이너 스타일 */
+.container{
+  width:1140px;
+  margin:0 auto;
+}
+/* 헤더 스타일 설정 */
+header{
+  position:fixed;
+  color:white;
+  top:0;
+  z-index:1;
+  width:100%;
+  padding:1rem;
+}
+/* 헤더 내 컨테이너 스타일 */
+header .container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+}
+/* 헤더 내 네비게이션 스타일 */
+header nav ul{
+  display:flex;
+}
+header nav ul li{
+  padding:10px;
+}
+/* 헤더 내 버튼 스타일 */
+header button{
+  background: transparent;
+  border:0;
+  cursor: pointer;
+  color:white; 
+}
+/* 헤더 내 h1 버튼 스타일 */
+header h1 button{
+  font-size: 2rem;
+  font-weight: bold;
+}
+/* 헤더 내 네비게이션 버튼 스타일 */
+header nav ul li button{
+  font-size: 1.2rem;
+}
+/* header.css 종료 */
+
+/* main.css 시작 */
+/* 메인 섹션 스타일 */
+main{
+  width:100%;
+  height:100vh;
+  color:white;
+  background:linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('images/me.jpg') center center;
+  background-size:cover;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+/* 메인 섹션 내 h4 스타일 */
+main h4{
+  font-size:2rem;
+}
+/* 메인 섹션 내 h2 스타일 */
+main h2{
+  font-size:3.5rem;
+  margin:2rem 0;
+  letter-spacing:3px;
+  font-family:'Varela Round', sans-serif; /* 웹 폰트 사용 */
+}
+/* 메인 섹션 내 p 스타일 */
+main p{
+  max-width:500px;
+  margin:0 auto;
+  font-size:1.25rem;
+}
+/* 메인 섹션 내 다운로드 버튼 스타일 */
+main button.download{
+  background-color:transparent;
+  border:3px solid white;
+  border-radius:20px;
+  padding:1rem 2rem;
+  margin-top:3rem;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+/* 메인 섹션 내 마우스 버튼 스타일 */
+main button.mouse{
+  background-color:transparent;
+  border:none;
+  color:white;
+  font-size:2rem;
+  position:absolute;
+  bottom:1rem;
+  left:50%;
+  transform:translateX(-50%);
+  animation:upDown 1s ease-in-out infinite;
+  cursor:pointer;
+}
+/* 마우스 버튼 애니메이션 */
+@keyframes upDown{
+  0%{
+    bottom:1rem;
+  }
+  50%{
+    bottom:1.5rem;
+  }
+  100%{
+    bottom:1rem;
+  }
+}
+/* 텍스트 타이핑 애니메이션 */
+main h2 span::after{
+  content:"";
+  height:40px;
+  width:3px;
+  background-color:#fff;
+  display:inline-block;
+  animation: blink .7s ease-in-out infinite;
+}
+/* 깜빡이는 애니메이션 */
+@keyframes blink {
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+/* about_me.css 시작 */
+/* 섹션 기본 스타일 */
+section{
+  font-family:'Poppins', sans-serif;
+  padding:5rem 0;
+}
+/* 짝수 번째 섹션 배경색 지정 */
+section:nth-child(2n){
+  background-color:#f8f8f8;
+}
+/* 섹션 제목 스타일 */
+section .title{
+  margin-bottom:3rem;
+}
+section .title h4{
+  font-size:1.35rem;
+  color:#ed4848;
+  position:relative;
+}
+section .title h2{
+  font-size:3.5rem; 
+}
+section .title p{
+  font-size:1.15rem;
+}
+/* about-self 내 float 속성 해제 */
+section .about-self::after{
+  content:"";
+  clear:both;
+  display:block;
+}
+/* about-self 왼쪽 영역 스타일 */
+section .about-self .left{
+  width:50%;
+  float:left;
+}
+/* about-self 왼쪽 이미지 스타일 */
+section .about-self .left img{
+  max-width:100%;
+}
+/* about-self 오른쪽 영역 스타일 */
+section .about-self .right{
+  width:50%;
+  float:left;
+  padding:0 2rem;
+}
+/* about-self 오른쪽 h3 스타일 */
+section .about-self .right h3{
+  font-size:2.25rem;
+  margin-bottom:1rem;
+}
+/* about-self 오른쪽 h3 내 strong 스타일 */
+section .about-self .right h3 strong{
+  color:#ed4848;
+}
+/* about-self 오른쪽 p 스타일 */
+section .about-self .right p{
+  font-size:1.15rem;
+  margin:1rem 0;
+}
+/* about-self 오른쪽 소셜 아이콘 스타일 */
+section .about-self .right .social a{
+  font-size:2.5rem;
+  margin-right:0.2rem;
+}
+/* about_me.css 종료 */
+
+/* what_i_do.css 시작 */
+/* do-me 내 float 속성 해제 */
+section .do-me::after{
+  content:"";
+  display:block;
+  clear:both;
+}
+/* do-me 내 사각형 스타일 */
+section .do-me .do-inner{
+  background-color:#fff;
+  width:30%;
+  padding:2rem; 
+  float:left;
+  margin-right:5%;
+  cursor:pointer;
+}
+/* 마지막 do-inner 여백 설정 */
+section .do-me .do-inner:last-child{
+  margin-right:0;
+}
+/* do-inner 내 아이콘 스타일 */
+section .do-me .do-inner .icon i{
+  font-size:2.5rem;
+  color:#ff6a6a;
+}
+/* do-inner 내 h3 스타일 */
+section .do-me .do-inner .content h3{
+  font-size:2rem;
+  margin:1rem 0;
+}
+/* do-inner 내 p 스타일 */
+section .do-me .do-inner .content p{
+  font-size:1.15rem;
+}
+/* do-inner 마우스 오버 시 스타일 */
+section .do-me .do-inner:hover{
+  background-color:lightcoral;
+  color:white;
+}
+/* do-inner 마우스 오버 시 아이콘 스타일 */
+section .do-me .do-inner:hover i{
+  color:white;
+}
+/* what_i_do.css 종료 */
+
+/* background.css 시작 */
+/* 배경 이미지 스타일 */
+.bg{
+  background:url('./images/background.jpg') center center;
+  background-size:cover;
+  background-attachment:fixed;
+  height:650px;
+}
+/* background.css 종료 */
+
+/* portfolio.css 시작 */
+/* portfolio 내 float 속성 해제 */
+section.portfolio::after{
+  content:"";
+  display:block;
+  clear:both;
+}
+/* portfolio-inner 스타일 */
+section.portfolio .portfolio-inner{
+  width:30%;
+  margin-right:5%;
+  padding:1rem 1rem 1.5rem 1rem;
+  float:left;
+  background-color:#f8f8f8;
+  border:1px solid #ccc;
+  margin-bottom:3rem;
+}
+/* 3번째 portfolio-inner 여백 설정 */
+section.portfolio .portfolio-inner:nth-child(3n){
+   margin-right:0;
+}
+/* portfolio-inner 내 이미지 스타일 */
+section.portfolio .portfolio-inner img{
+  width:100%;
+  display:block;
+}
+/* portfolio-inner 내 strong 스타일 */
+section.portfolio .portfolio-inner strong{
+  color:#ff6a6a;
+  margin:0.5rem 0;
+  display:block;
+}
+/* portfolio-inner 내 h3 스타일 */
+section.portfolio .portfolio-inner h3{
+  font-size:1.75rem;
+}
+/* portfolio.css 종료 */
+
+/* contact_with_me.css 시작 */
+
+/* contact_with_me.css 시작 */
+/* contact-me 내 float 속성 해제 */
+section.contact .contact-me::after{
+  content:"";
+  display:block;
+  clear:both;
+}
+/* contact-me 왼쪽 영역 스타일 */
+section.contact .contact-me .left{
+  width:30%;
+  float:left;
+}
+/* contact-me 오른쪽 영역 스타일 */
+section.contact .contact-me .right{
+  float:left;
+  width:65%;
+  margin-left:5%;
+}
+/* contact-me 왼쪽 카드 스타일 */
+section.contact .contact-me .left .card{
+  border:1px solid #ccc;
+  padding:1rem;
+  display:flex;
+  align-items:center;
+  margin-bottom:1.25rem;
+}
+/* contact-me 왼쪽 카드 내 아이콘 스타일 */
+section.contact .contact-me .left .card .icon i{
+  font-size:2rem;
+  margin-right:15px;
+}
+/* contact-me 오른쪽 영역 스타일 재정의 */
+section.contact .contact-me .right{ 
+  float:left;
+  width:65%;
+  margin-left:5%;
+  margin-bottom:2rem;
+  border:1px solid #ccc;
+  padding:1rem;
+}
+/* contact-me 오른쪽 form-group 스타일 */
+section.contact .contact-me .right .form-group{
+  margin-bottom:1.25rem;
+}
+/* contact-me 오른쪽 label 스타일 */
+section.contact .contact-me .right .form-group label{
+  display:block;
+  margin-bottom:0.85rem;
+}
+/* contact-me 오른쪽 input 스타일 */
+section.contact .contact-me .right .form-group input{
+  padding:0.625rem;
+  width:100%;
+  outline:none;
+  border:1px solid #ccc;
+  border-radius:10px;
+}
+/* contact-me 오른쪽 input 활성화 시 스타일 */
+section.contact .contact-me .right .form-group input:focus{
+  border:1px solid #719ECE;
+  box-shadow:0 0 10px #719ECE;
+}
+/* contact-me 오른쪽 textarea 스타일 */
+section.contact .contact-me .right .form-group textarea{
+  height:300px;
+  width:100%;
+  resize:none;
+  border:1px solid #ccc;
+  border-radius:10px;
+}
+/* contact-me 오른쪽 textarea 활성화 시 스타일 */
+section.contact .contact-me .right .form-group textarea:focus{
+  outline:none;
+  border:1px solid #719ECE;
+  box-shadow:0 0 10px #719ECE;
+}
+/* contact-me 오른쪽 버튼 스타일 */
+section.contact .contact-me .right button{
+  width:100%;
+  padding:1rem;
+  background-color:#f78b00;
+  border:none;
+  color:white;
+}
+/* contact_with_me.css 종료 */
+
+/* media.css 시작 */
+/* 화면 너비 1140px 이하일 때의 스타일 */
+@media screen and (max-width: 1140px){
+  /* 메인 container 너비 조절 */
+  main .container{
+    width: 992px;
+  }
+  /* 섹션 container 너비 조절 */
+  section .container{
+    width:600px;
+  }
+  /* About me 왼쪽 영역 너비 조절 */
+  section .about-self .left{
+    width:100%;
+    margin-bottom: 1.5rem;
+  }
+  /* About me 오른쪽 영역 너비 조절 */
+  section  .about-self .right{
+    width:100%;
+    padding:0;
+  }
+  /* What I Do 영역 너비 조절 */
+  section .do-me .do-inner{
+    width:48%;
+    margin-bottom: 1.5rem;
+    margin-right: 0;
+  }
+  /* What I Do 영역 간격 조절 */
+  section .do-me .do-inner:nth-child(2n+1){
+    margin-right:4%;
+  }
+  /* PortFolio 영역 너비 조절 */
+  section .portfolio-me .portfolio-inner{
+    width:48%;
+    margin-right: 0;
+  }
+  /* PortFolio 영역 간격 조절 */
+  section .portfolio-me .portfolio-inner:nth-child(2n+1){
+    margin-right:4%;
+  }
+  /* Contact With Me 영역 너비 조절 */
+  section.contact .contact-me .left{
+    width:100%;
+  }
+  section.contact .contact-me .right{
+    width:100%;
+    margin-left: 0;
+  }
+} 
+
+/* 화면 너비 992px 이하일 때의 스타일 */
+@media (max-width: 992px){
+  /* 기본 폰트 크기 설정 */
+  html{
+    font-size: 14px;
+  }
+
+  /* 메인 영역 container 너비 조절 */
+  main .container{
+    width: 768px;
+  }
+
+  /* PortFolio 영역 너비 조절 */
+  section .portfolio-me .portfolio-inner{
+    width:100%;
+  } 
+}
+
+/* 화면 너비 768px 이하일 때의 스타일 */
+@media (max-width: 768px){
+  /* 기본 폰트 크기 설정 */
+  html{
+    font-size: 13px;
+  }
+  
+  /* 메인 영역 container 너비 조절 */
+  main .container{
+    width: 576px;
+  }
+
+  /* 섹션 container 너비 조절 */
+  section .container{
+    width:400px;
+  }
+
+  /* What I Do 영역 너비 조절 */
+  section .do-me .do-inner{
+    width:100%;
+    margin-right: 0;
+  }
+}
+
+/* 화면 너비 576px 이하일 때의 스타일 */
+@media (max-width: 576px){
+  
+  /* 기본 폰트 크기 설정 */
+  html{
+    font-size: 12px;
+  }
+
+  /* 메인 영역 container 너비 조절 */
+  main .container{
+    width: 400px;
+  }
+
+  /* 섹션 container 너비 조절 */
+  section .container{
+    width:360px;
+  }
+}
+
+/* 화면 너비 400px 이하일 때의 스타일 */
+@media (max-width: 400px){
+  
+  /* 기본 폰트 크기 설정 */
+  html{
+    font-size: 11px;
+  }
+
+  /* 메인 영역 container 너비 조절 */
+  main .container{
+    width: 320px;
+  }
+
+  /* 메인 영역 h4 태그 폰트 크기 조절 */
+  main h4{
+    font-size: 1.5rem;
+  }
+
+  /* 섹션 container 너비 조절 */
+  section .container{
+    width: 320px;
+  }
+
+  /* 섹션 타이틀 h2 태그 폰트 크기 조절 */
+  section .title h2{
+    font-size: 3rem;
+  }
+}
+/* media.css 종료 */
+
+/* 활성화된 header의 배경색과 애니메이션 설정 */
+header.active{
+  background-color:rgba(0,0,0);
+  animation:fadeIn 0.5s ease-in-out;
+}
+
+/* fadeIn 애니메이션 정의 */
+@keyframes fadeIn{
+  0%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}

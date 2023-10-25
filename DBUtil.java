@@ -1,152 +1,143 @@
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-
-import java.io.InputStream;
+// 필요한 패키지와 클래스를 가져옵니다.
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-// DB연동 설정파일 (jdbc: mariadb / framework: Mybatis)
+// "DBUtil"이라는 클래스를 정의합니다. 이 클래스는 데이터베이스와의 연결 및 작업을 담당합니다.
 public class DBUtil {
 
-	// jdbc 사용자 정보 입력
-	String url = "jdbc:mariadb://127.0.0.1:3306/java_selfpj_thisisjava"; // addr_prj: 데이터가 저장될 스키마
-	String user = "root"; // 아이디
-	String pass = "12345"; // 비밀번호
-	SqlSessionFactory sqlSessionFactory; // mybatis SqlSessionFactory 필드 생성
+	// 데이터베이스 연결과 관련된 변수들을 선언합니다.
+	Connection conn = null;
+	Statement stmt = null;
+	ResultSet rs = null;
 
+	// 데이터베이스 연결 정보를 저장합니다.
+	String url = "jdbc:mysql://localhost:3306/b1?serverTimezone=UTC";
+	String user = "root";
+	String pass = "";
 
-	// db 연동 확인 메소드. 최초 실행 메소드
-	public void init(){
+	// "DBUtil" 클래스의 생성자입니다. 객체가 생성될 때 데이터베이스 연결을 초기화합니다.
+	public DBUtil() {
+		conn = getConnection();
+	}
+
+	// 데이터베이스 연결을 생성하고 반환하는 메서드입니다.
+	public Connection getConnection() {
+
+		Connection conn = null;
+
 		try {
-			String resource = "mybatis-config.xml";
-			InputStream inputStream = Resources.getResourceAsStream(resource);
+			// 1. MySQL 드라이버를 로드합니다.
+			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			// SqlSessionFactory 빌드하기
-			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+			// 2. 데이터베이스 연결을 생성합니다.
+			conn = DriverManager.getConnection(url, user, pass);
 
-		} catch (Exception e) {
-			System.out.println("MyBatis 설정 파일 가져오는 중 문제 발생!!");
-			e.printStackTrace(); // printStackTrace() : 예외가 발생하면 예외 족적(발자취)을 남긴다.
+		} catch(Exception e) {
+			// 연결 중 문제가 발생하면 오류 메시지를 출력합니다.
+			System.out.println("DB 작업중 문제 발생");
+			e.printStackTrace();
 		}
 
+		return conn;
 	}
 
-	// 게시글 작성 메소드 (CREATE)
-	public void insertBoard(String btitle, String bcontent, String bwriter) {
-		SqlSession session = sqlSessionFactory.openSession();
-		BoardMapper mapper = session.getMapper(BoardMapper.class);
-		BoardVO boardVO = new BoardVO(btitle, bcontent, bwriter);
-		mapper.insertBoard(boardVO);
+	// 주소록에 새로운 주소를 추가하는 메서드입니다.
+	public void insertAddress(String name, String address, String phone) {
 
+		try {
+			stmt = conn.createStatement();
 
-		session.commit(); // update, delete, insert
-	}
+			// 주소록에 추가할 SQL 쿼리를 작성합니다.
+			String sql = "INSERT INTO t_address\r\n"
+					+ "SET `name` = '" + name + "',\r\n"
+					+ "address = '" + address + "',\r\n"
+					+ "phone = '" + phone + "'";
 
-	// 게시판 목록 출력 메소드 (READ)
-	public ArrayList<BoardVO> getBoard(){
-		SqlSession session = sqlSessionFactory.openSession();
-		BoardMapper mapper = session.getMapper(BoardMapper.class);
-		ArrayList<BoardVO> boardVOList = mapper.getBoard();
+			// SQL 쿼리를 실행하여 주소록에 추가합니다.
+			stmt.executeUpdate(sql);
 
-		return boardVOList;
-	}
-
-	// 입력한 bno의 게시글을 읽는 메소드 (READ)
-	public ArrayList<BoardVO> readBoard(int bno){
-		SqlSession session = sqlSessionFactory.openSession();
-		BoardMapper mapper = session.getMapper(BoardMapper.class);
-		ArrayList<BoardVO> boardVOList = mapper.readBoard(bno);
-
-		return boardVOList;
-	}
-
-	// 게시글 수정 메소드 (UPDATE)
-	public void updateBoard(int bno, String btitle, String bcontent, String bwriter){
-		SqlSession session = sqlSessionFactory.openSession();
-		BoardMapper mapper = session.getMapper(BoardMapper.class);
-		BoardVO boardVO = new BoardVO(bno, btitle, bcontent, bwriter);
-		mapper.updateBoard(boardVO);
-
-		session.commit();
-	}
-
-	// 게시글 삭제 메소드 (DELETE)
-	public void deleteBoard(int bno) {
-		SqlSession session = sqlSessionFactory.openSession();
-		BoardMapper mapper = session.getMapper(BoardMapper.class);
-		mapper.deleteBoard(bno);
-
-		session.commit(); // update, delete, insert
-	}
-
-	// 게시글 전체 삭제 메소드 (DELETE)
-	public void clearBoard(){
-		SqlSession session = sqlSessionFactory.openSession();
-		BoardMapper mapper = session.getMapper(BoardMapper.class);
-		mapper.clearBoard();
-
-		session.commit();
-	}
-
-	// 게시판 틀 출력 메소드
-	public void homeBoard(){
-		System.out.println();
-		System.out.println("[게시판 목록]");
-		System.out.println("-----------------------------------------------------------------");
-		System.out.printf("%-6s%-12s%-40s%-40s\n", "no", "writer", "date", "title"); // ??? 형식문자열. %-6s : 6자리 정수, 오른쪽 빈자리 공백
-		System.out.println("-----------------------------------------------------------------");
-	}
-
-	// 메인메뉴 출력 메소드
-	public void mainMenu(){
-		System.out.println("-----------------------------------------------------------------");
-		System.out.println("메인 메뉴 : 1.create | 2.read | 3.clear | 4.exit");
-		System.out.print("메뉴 선택 : ");
-	}
-
-	// OK 서브메뉴 메소드
-	public void okSubMenu(){
-		System.out.println("-----------------------------------------------------------------");
-		System.out.println("보조 메뉴 : 1.Ok | 2.Cancel");
-		System.out.print("메뉴 선택 : ");
-	}
-
-	// read의 서브메뉴 메소드
-	public void readSubMenu(){
-		System.out.println("-----------------------------------------------------------------");
-		System.out.println("보조 메뉴 : 1.Update | 2.Delete | 3.List");
-		System.out.print("메뉴 선택 : ");
-	}
-
-	// 종료 메소드
-	public void exit(){
-		System.out.println();
-		System.out.println("게시판 기능을 종료합니다. 이용해주셔서 감사합니다.");
-		System.exit(0);
-	}
-
-	// 게시판 리스트 출력 형식 메소드
-	public void printNowBoard(ArrayList<BoardVO> boardVOList) {
-
-		for(int i = 0; i < boardVOList.size(); i++) {
-			// 게시판 목록 형식문자열. 자리맞추기
-			System.out.printf("%-6s%-10s%-40s%-40s\n",
-					boardVOList.get(i).getBno(),
-					boardVOList.get(i).getBwriter(),
-					boardVOList.get(i).getBdate(),
-					boardVOList.get(i).getBtitle());
+		} catch(Exception e) {
+			// 작업 중 문제가 발생하면 오류 메시지를 출력합니다.
+			System.out.println("ADD DB작업중 문제 발생!!");
+			e.printStackTrace();
 		}
 	}
 
-	// read의 게시글 출력 형식 메소드
-	public void readBnoBoard(ArrayList<BoardVO> boardVOList){
-			System.out.println("#######################################");
-			System.out.println("번호: " + boardVOList.get(0).getBno());
-			System.out.println("제목: " + boardVOList.get(0).getBtitle());
-			System.out.println("내용: " + boardVOList.get(0).getBcontent());
-			System.out.println("작성자: " + boardVOList.get(0).getBwriter());
-			System.out.println("날짜: " + boardVOList.get(0).getBdate());
-			System.out.println("#######################################");
+	// 데이터베이스에서 모든 주소록 목록을 가져오는 메서드입니다.
+	public ArrayList<Addr> getAddresses() {
+
+		ArrayList<Addr> AddrList = new ArrayList<>();
+
+		try {
+			stmt = conn.createStatement();
+
+			// 모든 주소록을 가져올 SQL 쿼리를 작성합니다.
+			String sql = "SELECT *\r\n"
+					+ "FROM t_address";
+
+			// SQL 쿼리를 실행하여 결과를 가져옵니다.
+			rs = stmt.executeQuery(sql);
+
+			// 결과를 순회하며 주소록 목록에 추가합니다.
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String address = rs.getString("address");
+				String phone = rs.getString("phone");
+
+				Addr a1 = new Addr(id, name, address, phone);
+				AddrList.add(a1);
+			}
+		} catch(Exception e) {
+			// 작업 중 문제가 발생하면 오류 메시지를 출력합니다.
+			System.out.println("list DB 작업중 문제 발생!!");
+			e.printStackTrace();
+		}
+
+		return AddrList;
+	}
+
+	// 주소록의 정보를 수정하는 메서드입니다.
+	public void updateAddress(int id, String name, String address, String phone) {
+		try {
+			stmt = conn.createStatement();
+
+			// 주소록을 수정할 SQL 쿼리를 작성합니다.
+			String sql = "UPDATE t_address\r\n"
+					+ "SET `name` = '" + name + "',\r\n"
+					+ "address = '" + address + "',\r\n"
+					+ "phone = '" + phone + "'\r\n"
+					+ "WHERE id = " + id;
+
+			// SQL 쿼리를 실행하여 주소록을 수정합니다.
+			stmt.executeUpdate(sql);
+
+		} catch(Exception e) {
+			// 작업 중 문제가 발생하면 오류 메시지를 출력합니다.
+			System.out.println("ADD DB작업중 문제 발생!!");
+			e.printStackTrace();
+		}
+	}
+
+	// 주소록을 삭제하는 메서드입니다.
+	public void deleteAddress(int id) {
+		try {
+			stmt = conn.createStatement();
+
+			// 주소록을 삭제할 SQL 쿼리를 작성합니다.
+			String sql = "DELETE FROM t_address\r\n"
+					+ "WHERE id = " + id;
+
+			// SQL 쿼리를 실행하여 주소록을 삭제합니다.
+			stmt.executeUpdate(sql);
+
+		} catch(Exception e) {
+			// 작업 중 문제가 발생하면 오류 메시지를 출력합니다.
+			System.out.println("ADD DB작업중 문제 발생!!");
+			e.printStackTrace();
+		}
 	}
 }
